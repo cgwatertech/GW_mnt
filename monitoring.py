@@ -25,7 +25,7 @@ df = get_data()
 st.title("영등포 양평의 지하수위 관측")
 
 # Top-level filters
-job_filter = st.selectbox("관측공의 위치 선택", pd.unique(df.columns), index=df.columns.get_loc('Test02'))
+job_filter = st.selectbox("관측공의 위치 선택", pd.unique(df.columns), index=df.columns.get_loc('WA06'))
 
 st.markdown("### 지하수위 그래프")
 df["Time"] = pd.to_datetime(df["Time"])
