@@ -14,7 +14,7 @@ st.set_page_config(
     layout="wide")
 
 # Read data from a CSV file
-dataset_url = "https://raw.githubusercontent.com/cgwatertech/PySimpleGUI/master/cgwt.csv"
+dataset_url = "https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv"
 @st.experimental_memo
 def get_data() -> pd.DataFrame:
     return pd.read_csv(dataset_url)
