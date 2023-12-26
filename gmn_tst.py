@@ -11,6 +11,9 @@ st.sidebar.title("위치 리스트")
 # 'Time'을 제외한 컬럼들을 선택 박스에 넣음
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
+# 이미지 업로드
+uploaded_file = st.file_uploader("이미지 파일을 업로드하세요.", type=["jpg", "jpeg", "png"])
+
 # Main content (오른쪽 프레임)
 st.title("지하수위 관측 웹페이지")
 
@@ -51,3 +54,8 @@ if st.button("그래프 보기"):
     )
 
     st.plotly_chart(fig)
+
+# 이미지 표시
+if uploaded_file is not None:
+    st.subheader("업로드한 이미지")
+    st.image(uploaded_file, caption="업로드한 이미지", use_column_width=True)
