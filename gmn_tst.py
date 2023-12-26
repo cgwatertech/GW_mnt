@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+import base64
 
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
@@ -13,10 +14,6 @@ selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # Main content (오른쪽 프레임)
 st.title("지하수위 관측 웹페이지")
-
-# Table (오른쪽 아래 프레임)
-st.subheader("데이터 표")
-st.write(df)
 
 # Plot (오른쪽 위 프레임)
 st.subheader(f"{selected_location} 위치의 지하수위 변화")
@@ -50,10 +47,12 @@ fig.update_layout(
 
 st.plotly_chart(fig)
 
-# 이미지 업로드
-uploaded_file = st.file_uploader("이미지 파일을 업로드하세요.", type=["jpg", "jpeg", "png"])
+# CSV 파일 다운로드 버튼
+csv_data = df.to_csv(index=False)
+b64 = base64.b64encode(csv_data.encode()).decode()
+st.markdown(f'<a href="data:file/csv;base64,{b64}" download="cgwt_data.csv">CSV 파일 다운로드</a>', unsafe_allow_html=True)
 
 # 이미지 표시
-if uploaded_file is not None:
-    st.subheader("업로드한 이미지")
-    st.image(uploaded_file, caption="업로드한 이미지", use_column_width=True)
+image_path = "https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png"  # 이미지 파일 경로
+st.subheader("이미지")
+st.image(image_path, caption="테스트 이미지", use_column_width=True)
