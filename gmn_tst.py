@@ -13,7 +13,7 @@ st.sidebar.title("위치 리스트")
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # Main content (오른쪽 프레임)
-st.title("양평의 지하수위 관측 웹페이지")
+st.title("지하수위 관측 웹페이지")
 
 # 이미지 표시
 st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
@@ -54,6 +54,10 @@ st.plotly_chart(fig, use_container_width=True)
 # 선택한 그래프의 시간과 데이터 다운로드 버튼
 selected_data = df[['Time', selected_location]]
 csv_selected_data = selected_data.to_csv(index=False)
-
 b64_selected_data = base64.b64encode(csv_selected_data.encode()).decode()
-st.markdown(f'<a href="data:file/csv;base64,{b64_selected_data}" download="selected_data.csv">선택 그래프 데이터 다운로드</a>', unsafe_allow_html=True)
+st.markdown(f'<a href="data:file/csv;base64,{b64_selected_data}" download="selected_data.csv">선택한 데이터 다운로드</a>', unsafe_allow_html=True)
+
+# 전체 데이터 다운로드 버튼
+csv_all_data = df.to_csv(index=False)
+b64_all_data = base64.b64encode(csv_all_data.encode()).decode()
+st.markdown(f'<a href="data:file/csv;base64,{b64_all_data}" download="all_data.csv">전체 자료 다운로드</a>', unsafe_allow_html=True)
