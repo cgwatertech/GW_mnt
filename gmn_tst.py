@@ -13,7 +13,7 @@ st.sidebar.title("위치 리스트")
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # Main content (오른쪽 프레임)
-st.title("지하수위 관측 웹페이지")
+st.title("양평 자이아파트 현장의 지하수위 관측")
 
 # 이미지 표시
 st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
