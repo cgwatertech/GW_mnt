@@ -15,7 +15,10 @@ selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 # Main content (오른쪽 프레임)
 st.title("지하수위 관측 웹페이지")
 
-# Plot (오른쪽 위 프레임)
+# 이미지 표시
+st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
+
+# Plot (오른쪽 아래 프레임)
 st.subheader(f"{selected_location} 위치의 지하수위 변화")
 
 # 선택한 위치에 대한 평균 값을 계산
@@ -45,15 +48,12 @@ fig.update_layout(
     ]
 )
 
-st.plotly_chart(fig)
+# 반응형으로 그래프 표시
+st.plotly_chart(fig, use_container_width=True)
 
-# CSV 파일 다운로드 버튼
-csv_data = df.to_csv(index=False)
-b64 = base64.b64encode(csv_data.encode()).decode()
-st.markdown(f'<a href="data:file/csv;base64,{b64}" download="cgwt_data.csv">전체 CSV 파일 다운로드</a>', unsafe_allow_html=True)
-
-# 선택한 그래프의 시간과 자료 다운로드 버튼
+# 선택한 그래프의 시간과 데이터 다운로드 버튼
 selected_data = df[['Time', selected_location]]
-selected_data_csv = selected_data.to_csv(index=False)
-b64_selected = base64.b64encode(selected_data_csv.encode()).decode()
-st.markdown(f'<a href="data:file/csv;base64,{b64_selected}" download="selected_data.csv">선택 그래프 데이터 다운로드</a>', unsafe_allow_html=True)
+csv_selected_data = selected_data.to_csv(index=False)
+
+b64_selected_data = base64.b64encode(csv_selected_data.encode()).decode()
+st.markdown(f'<a href="data:file/csv;base64,{b64_selected_data}" download="selected_data.csv">선택 그래프 데이터 다운로드</a>', unsafe_allow_html=True)
