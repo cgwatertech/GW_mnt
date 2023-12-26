@@ -50,9 +50,10 @@ st.plotly_chart(fig)
 # CSV 파일 다운로드 버튼
 csv_data = df.to_csv(index=False)
 b64 = base64.b64encode(csv_data.encode()).decode()
-st.markdown(f'<a href="data:file/csv;base64,{b64}" download="cgwt_data.csv">CSV 파일 다운로드</a>', unsafe_allow_html=True)
+st.markdown(f'<a href="data:file/csv;base64,{b64}" download="cgwt_data.csv">전체 CSV 파일 다운로드</a>', unsafe_allow_html=True)
 
-# 이미지 표시
-image_path = "https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png"  # 이미지 파일 경로
-st.subheader("이미지")
-st.image(image_path, caption="테스트 이미지", use_column_width=True)
+# 선택한 그래프의 시간과 자료 다운로드 버튼
+selected_data = df[['Time', selected_location]]
+selected_data_csv = selected_data.to_csv(index=False)
+b64_selected = base64.b64encode(selected_data_csv.encode()).decode()
+st.markdown(f'<a href="data:file/csv;base64,{b64_selected}" download="selected_data.csv">선택 그래프 데이터 다운로드</a>', unsafe_allow_html=True)
