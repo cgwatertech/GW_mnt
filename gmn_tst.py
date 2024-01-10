@@ -13,7 +13,7 @@ st.sidebar.title("위치 리스트")
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # Main content (오른쪽 프레임)
-st.title("양평 자이아파트 현장의 지하수위 관측")
+st.title("지하수위 관측 웹페이지")
 
 # 이미지 표시
 st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
@@ -32,6 +32,11 @@ fig = px.line(df, x="Time", y=selected_location, title=f"{selected_location} 위
 
 # y 축 리미트 설정
 fig.update_layout(yaxis=dict(range=[avg_value - 3, avg_value + 4]))
+
+# x 축 tick 및 라벨 설정
+tickvals = df['Time'].iloc[::len(df) // 6]  # 7 ticks로 나누기
+ticktext = [pd.to_datetime(val).strftime('%Y-%m-%d %H:%M:%S') for val in tickvals]
+fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
 # 확대 및 축소 기능 추가
 fig.update_layout(
@@ -55,7 +60,7 @@ st.plotly_chart(fig, use_container_width=True)
 selected_data = df[['Time', selected_location]]
 csv_selected_data = selected_data.to_csv(index=False)
 b64_selected_data = base64.b64encode(csv_selected_data.encode()).decode()
-st.markdown(f'<a href="data:file/csv;base64,{b64_selected_data}" download="selected_data.csv">선택한 데이터 다운로드</a>', unsafe_allow_html=True)
+st.markdown(f'<a href="data:file/csv;base64,{b64_selected_data}" download="selected_data.csv">선택 그래프 데이터 다운로드</a>', unsafe_allow_html=True)
 
 # 전체 데이터 다운로드 버튼
 csv_all_data = df.to_csv(index=False)
