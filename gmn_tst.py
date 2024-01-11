@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import base64
+import webbrowser
 
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
@@ -34,8 +35,8 @@ fig = px.line(df, x="Time", y=selected_location, title=f"{selected_location} 위
 fig.update_layout(yaxis=dict(range=[avg_value - 3, avg_value + 4]))
 
 # x 축 tick 및 라벨 설정
-tickvals = df['Time'].iloc[::len(df) // 6]  # 7 ticks로 나누기
-ticktext = [pd.to_datetime(val).strftime('%Y-%m-%d %H:%M:%S') for val in tickvals]
+tickvals = df['Time'].iloc[::len(df) // 4]  # 7 ticks로 나누기
+ticktext = [pd.to_datetime(val).strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
 # 확대 및 축소 기능 추가
@@ -67,8 +68,20 @@ csv_all_data = df.to_csv(index=False)
 b64_all_data = base64.b64encode(csv_all_data.encode()).decode()
 st.markdown(f'<a href="data:file/csv;base64,{b64_all_data}" download="all_data.csv">전체 자료 다운로드</a>', unsafe_allow_html=True)
 
-# 선택 결과를 새로운 창에서 보여주기
-if st.sidebar.button("선택 결과 보기", key="selected_data_button", help="왼쪽에서 위치를 선택하면 바로 해당 자료를 볼 수 있습니다."):
-    new_window = st.sidebar.empty()  # 새로운 창을 열기 위한 준비
-    with new_window:
-        st.write(selected_data)
+# 새로운 창에서 선택 결과 보기
+if st.sidebar.button("선택 결과 보기", key="selected_data_button", help="왼쪽에서 위치를 선택하면 해당 자료를 볼 수 있습니다."):
+    temp_html = "temp_selected_data.html"
+    selected_data_html = f"""
+    <html>
+        <head>
+            <title>선택 결과</title>
+        </head>
+        <body>
+            <h1>{selected_location} 선택 결과</h1>
+            {selected_data.to_html(index=False)}
+        </body>
+    </html>
+    """
+    with open(temp_html, "w") as f:
+        f.write(selected_data_html)
+    webbrowser.open(temp_html, new=2)
