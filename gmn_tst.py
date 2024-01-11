@@ -73,7 +73,7 @@ selected_data_preview = selected_data_preview.style.hide_index()
 # 선택 결과를 새로운 창에서 보여주기
 new_window = st.sidebar.empty()  # 새로운 창을 열기 위한 준비
 with new_window:
-    st.table(selected_data_preview)
+    st.write(selected_data_preview.render())
 
 # 선택 결과를 새로운 창에서 보여주기
 #selected_data_preview = df[['Time', selected_location]]
