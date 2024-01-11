@@ -69,13 +69,13 @@ st.markdown(f'<a href="data:file/csv;base64,{b64_all_data}" download="all_data.c
 
 selected_data_preview = df[['Time', selected_location]].copy()
 
-# hide_index() 대신에 set_table_styles을 사용하여 인덱스 감춤
-selected_data_preview.set_table_styles([{'selector': 'thead tr th:first-child', 'props': 'display: none;'}])
+# 인덱스를 감춤
+selected_data_preview.set_index('Time', inplace=True)
 
 # 선택 결과를 새로운 창에서 보여주기
 new_window = st.sidebar.empty()  # 새로운 창을 열기 위한 준비
 with new_window:
-    st.write(selected_data_preview.render())
+    st.write(selected_data_preview)
 
 # 선택 결과를 새로운 창에서 보여주기
 #selected_data_preview = df[['Time', selected_location]]
