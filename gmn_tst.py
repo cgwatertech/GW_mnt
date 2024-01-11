@@ -1,6 +1,3 @@
-User
-저는 지금요.
-
 import streamlit as st
 import pandas as pd
 import plotly.express as px
