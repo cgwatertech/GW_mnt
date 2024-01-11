@@ -69,7 +69,6 @@ st.markdown(f'<a href="data:file/csv;base64,{b64_all_data}" download="all_data.c
 
 # 선택 결과를 새로운 창에서 보여주기
 selected_data_preview = df[['Time', selected_location]]
-selected_data_preview = selected_data_preview.style.hide(axis='index')
 new_window = st.sidebar.empty()  # 새로운 창을 열기 위한 준비
 with new_window:
-    st.write(selected_data_preview)
+    st.table(selected_data_preview)
