@@ -34,8 +34,8 @@ fig = px.line(df, x="Time", y=selected_location, title=f"{selected_location} 위
 fig.update_layout(yaxis=dict(range=[avg_value - 3, avg_value + 4]))
 
 # x 축 tick 및 라벨 설정
-tickvals = df['Time'].iloc[::len(df) // 6]  # 7 ticks로 나누기
-ticktext = [pd.to_datetime(val).strftime('%Y-%m-%d %H:%M:%S') for val in tickvals]
+tickvals = df['Time'].iloc[::len(df) // 5]  # 7 ticks로 나누기
+ticktext = [pd.to_datetime(val).strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
 # 확대 및 축소 기능 추가
