@@ -67,6 +67,7 @@ csv_all_data = df.to_csv(index=False)
 b64_all_data = base64.b64encode(csv_all_data.encode()).decode()
 st.markdown(f'<a href="data:file/csv;base64,{b64_all_data}" download="all_data.csv">전체 자료 다운로드</a>', unsafe_allow_html=True)
 
-# 선택 결과를 새로운 창에서 보여주기
-selected_data_preview = df[['Time', selected_location]]
-st.write(selected_data_preview)
+# 현재 창에서 선택 결과 보기
+if st.sidebar.button("선택 결과 보기", key="selected_data_button", help="왼쪽에서 위치를 선택하면 해당 자료를 볼 수 있습니다."):
+    st.subheader(f"{selected_location} 선택 결과")
+    st.write(selected_data)
