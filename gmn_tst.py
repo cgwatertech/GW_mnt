@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import base64
+from datetime import datetime
 
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
@@ -18,6 +19,10 @@ df['Time'] = pd.to_datetime(df['Time'])
 # 시작 날짜와 끝 날짜 선택
 start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].min())
 end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
+
+# datetime 객체로 변환
+start_date = datetime.combine(start_date, datetime.min.time())
+end_date = datetime.combine(end_date, datetime.min.time())
 
 # 시작 날짜와 끝 날짜 사이의 데이터 필터링
 filtered_data = df[(df['Time'] >= start_date) & (df['Time'] <= end_date)]
