@@ -12,8 +12,15 @@ st.sidebar.title("위치 리스트")
 # 'Time'을 제외한 컬럼들을 선택 박스에 넣음
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
+# Time 열을 DateTime 객체로 변환
+df['Time'] = pd.to_datetime(df['Time'])
+
+# Min, Max 날짜 지정
+min_date = df['Time'].min()
+max_date = df['Time'].max()
+
 # 날짜 선택
-selected_date = st.sidebar.date_input("날짜를 선택하세요", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
+selected_date = st.sidebar.date_input("날짜를 선택하세요", min_value=min_date, max_value=max_date, value=max_date)
 
 # Main content (오른쪽 프레임)
 st.title("지하수위 관측 웹페이지")
