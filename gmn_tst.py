@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import base64
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
@@ -17,15 +17,22 @@ selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 df['Time'] = pd.to_datetime(df['Time'])
 
 # 시작 날짜와 끝 날짜 선택
-start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].min())
+start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max() - timedelta(days=7))
 end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
 
-# datetime 객체로 변환
-start_date = datetime.combine(start_date, datetime.min.time())
-end_date = datetime.combine(end_date, datetime.min.time())
+# 시간 선택
+start_time = st.sidebar.time_input("시작 시간 선택", value=datetime.min.time())
+end_time = st.sidebar.time_input("끝 시간 선택", value=datetime.max.time())
 
-# 시작 날짜와 끝 날짜 사이의 데이터 필터링
-filtered_data = df[(df['Time'] >= start_date) & (df['Time'] <= end_date)]
+# datetime 객체로 변환
+start_datetime = datetime.combine(start_date, start_time)
+end_datetime = datetime.combine(end_date, end_time)
+
+# 시작 날짜와 끝 날짜 사이의 데이터 필터링 및 시간 필터링
+filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
+
+# 최신 자료가 먼저 표시되도록 정렬
+filtered_data = filtered_data.sort_values(by='Time', ascending=False)
 
 # Main content (오른쪽 프레임)
 st.title("지하수위 관측 웹페이지")
@@ -34,7 +41,7 @@ st.title("지하수위 관측 웹페이지")
 st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
 
 # Plot (오른쪽 아래 프레임)
-st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_date}부터 {end_date})")
+st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
 
 # 선택한 위치에 대한 평균 값을 계산
 avg_value = filtered_data[selected_location].mean()
@@ -43,14 +50,14 @@ avg_value = filtered_data[selected_location].mean()
 avg_df = pd.DataFrame({'Time': filtered_data['Time'], selected_location: avg_value})
 
 # 그래프 그리기
-fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_date}부터 {end_date})")
+fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
 
 # y 축 리미트 설정
 fig.update_layout(yaxis=dict(range=[avg_value - 3, avg_value + 4]))
 
 # x 축 tick 및 라벨 설정
 tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 7 ticks로 나누기
-ticktext = [val.strftime('%Y-%m-%d %H') for val in tickvals]
+ticktext = [val.strftime('%Y-%m-%d %H:%M:%S') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
 # 확대 및 축소 기능 추가
