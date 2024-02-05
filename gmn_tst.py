@@ -58,7 +58,7 @@ fig.update_layout(yaxis=dict(range=[-20, 0]))
 
 # x 축 tick 및 라벨 설정
 tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 7 ticks로 나누기
-ticktext = [val.strftime('%Y-%m-%d %H:%M:%S') for val in tickvals]
+ticktext = [val.strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
 # 확대 및 축소 기능 추가
