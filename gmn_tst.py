@@ -58,10 +58,10 @@ avg_df = pd.DataFrame({'Time': filtered_data['Time'], selected_location: avg_val
 fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
 
 # y 축 리미트 설정
-fig.update_layout(yaxis=dict(range=[avg_value - 3, avg_value + 4]))
+fig.update_layout(yaxis=dict(range=[avg_value - 6, avg_value + 6]))
 
 # x 축 tick 및 라벨 설정
-tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 4 ticks로 나누기
+tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 5 ticks로 나누기
 ticktext = [val.strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
