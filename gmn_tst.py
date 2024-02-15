@@ -68,6 +68,7 @@ ticktext = [val.strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
 # 확대 및 축소 기능 추가
+# 확대 및 축소 기능 추가
 fig.update_layout(
     updatemenus=[
         dict(
@@ -76,7 +77,9 @@ fig.update_layout(
             y=0.8,
             buttons=[
                 dict(label="전체보기", method="relayout", args=["yaxis", dict(range=[filtered_data[selected_location].min(), filtered_data[selected_location].max()])]),
-                dict(label="기본값", method="relayout", args=["yaxis", dict(range=[avg_value - 3, avg_value + 4])]),
+                dict(label="기본값", method="relayout", args=["yaxis", dict(range=[avg_value - 5, avg_value + 4])]),
+                dict(label="Zoom In", method="relayout", args=["yaxis", {"range": [fig.layout.yaxis.range[0] / 2, fig.layout.yaxis.range[1] / 2]}]),
+                dict(label="Zoom Out", method="relayout", args=["yaxis", {"range": [fig.layout.yaxis.range[0] * 2, fig.layout.yaxis.range[1] * 2]}]),
             ],
         ),
     ]
