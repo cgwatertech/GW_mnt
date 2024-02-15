@@ -30,11 +30,13 @@ start_datetime = datetime.combine(start_date, datetime.strptime(start_time, "%H:
 end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S").time())
 
 # 선택하는 시간 선택
-selected_hour = st.sidebar.selectbox("선택하는 시간", range(24))
+selected_hour = st.sidebar.selectbox("선택하는 시간", range(25))
 
 # 시작 날짜와 끝 날짜 사이의 데이터 필터링 및 시간 필터링
-#filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime) & (df['Time'].dt.hour == selected_hour)]
-filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
+if selected_hour == 24:
+    filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
+else:
+    filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime) & (df['Time'].dt.hour == selected_hour)]
 
 # 최신 자료가 먼저 표시되도록 정렬
 filtered_data = filtered_data.sort_values(by='Time', ascending=False)
