@@ -18,10 +18,11 @@ df['Time'] = pd.to_datetime(df['Time'])
 
 # 시작 날짜와 끝 날짜 선택
 start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max() - timedelta(days=7))
-end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
-
 # 시간 선택
 start_time = st.sidebar.time_input("시작 시간 선택", value=datetime.min.time())
+
+end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
+# 시간 선택
 end_time = st.sidebar.time_input("끝 시간 선택", value=datetime.max.time())
 
 # datetime 객체로 변환
