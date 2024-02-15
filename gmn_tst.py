@@ -19,11 +19,11 @@ df['Time'] = pd.to_datetime(df['Time'])
 # 시작 날짜와 끝 날짜 선택
 start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max() - timedelta(days=7))
 # 시간 선택
-start_time = st.sidebar.time_input("시작 시간 선택", value=datetime.min.time())
+start_time = st.sidebar.selectbox("시작 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=0)
 
 end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
 # 시간 선택
-end_time = st.sidebar.time_input("끝 시간 선택", value=datetime.max.time())
+end_time = st.sidebar.selectbox("끝 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=len(pd.date_range("00:00:00", "23:00:00", freq="H")) - 1)
 
 # datetime 객체로 변환
 start_datetime = datetime.combine(start_date, start_time)
@@ -58,7 +58,7 @@ fig.update_layout(yaxis=dict(range=[avg_value - 3, avg_value + 4]))
 
 # x 축 tick 및 라벨 설정
 tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 7 ticks로 나누기
-ticktext = [val.strftime('%Y-%m-%d %H:%M:%S') for val in tickvals]
+ticktext = [val.strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
 # 확대 및 축소 기능 추가
