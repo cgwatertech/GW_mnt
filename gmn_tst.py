@@ -83,7 +83,8 @@ fig.update_layout(
 )
 
 # 반응형으로 그래프 표시
-st.plotly_chart(fig, use_container_width=True)
+#st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, use_container_width=False)
 
 # 선택한 그래프의 시간과 데이터 다운로드 버튼
 selected_data = filtered_data[['Time', selected_location]]
