@@ -60,7 +60,7 @@ fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_lo
 fig.update_layout(yaxis=dict(range=[avg_value - 3, avg_value + 4]))
 
 # x 축 tick 및 라벨 설정
-tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 7 ticks로 나누기
+tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 4]  # 4 ticks로 나누기
 ticktext = [val.strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
