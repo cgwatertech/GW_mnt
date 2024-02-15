@@ -26,8 +26,8 @@ end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min()
 end_time = st.sidebar.selectbox("끝 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=len(pd.date_range("00:00:00", "23:00:00", freq="H")) - 1)
 
 # datetime 객체로 변환
-start_datetime = datetime.combine(start_date, start_time)
-end_datetime = datetime.combine(end_date, end_time)
+start_datetime = datetime.combine(start_date, datetime.strptime(start_time, "%H:%M:%S").time())
+end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S").time())
 
 # 시작 날짜와 끝 날짜 사이의 데이터 필터링 및 시간 필터링
 filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
@@ -98,4 +98,4 @@ selected_data_preview.set_index('Time', inplace=True)
 
 # 왼쪽 프레임에 데이터를 미리보는 창 추가
 st.sidebar.subheader("선택된 데이터 미리보기")
-st.sidebar.write(selected_data_preview)
+st.sidebar.write(selected_data_preview.head(10))
