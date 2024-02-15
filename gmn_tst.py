@@ -98,4 +98,4 @@ selected_data_preview.set_index('Time', inplace=True)
 
 # 왼쪽 프레임에 데이터를 미리보는 창 추가
 st.sidebar.subheader("선택된 데이터 미리보기")
-st.sidebar.write(selected_data_preview.head(10))
+st.sidebar.write(selected_data_preview.sort_index().head(10))
