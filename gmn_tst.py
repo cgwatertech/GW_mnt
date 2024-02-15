@@ -4,6 +4,7 @@ import plotly.express as px
 import base64
 from datetime import datetime, timedelta
 
+ystv = 16
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
 
@@ -60,7 +61,7 @@ avg_df = pd.DataFrame({'Time': filtered_data['Time'], selected_location: avg_val
 fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
 
 # y 축 리미트 설정
-fig.update_layout(yaxis=dict(range=[avg_value - 16, avg_value + 16]))
+fig.update_layout(yaxis=dict(range=[avg_value - 17, avg_value + 17]))
 
 # x 축 tick 및 라벨 설정
 tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 5 ticks로 나누기
@@ -76,7 +77,7 @@ fig.update_layout(
             y=0.8,
             buttons=[
                 dict(label="전체보기", method="relayout", args=["yaxis", dict(range=[filtered_data[selected_location].min(), filtered_data[selected_location].max()])]),
-                dict(label="기본값", method="relayout", args=["yaxis", dict(range=[avg_value - 5, avg_value + 4])]),
+                dict(label="기본값", method="relayout", args=["yaxis", dict(range=[avg_value - 17, avg_value + 17])]),
             ],
         ),
     ]
