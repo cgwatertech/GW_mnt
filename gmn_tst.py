@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
-
+yxs = "GL"
 # Sidebar (왼쪽 프레임)
 st.sidebar.title("지하수위계")
 
@@ -63,7 +63,7 @@ rng_vale = rng_value / 2
 # 평균 값으로 새로운 데이터 프레임을 만듦
 avg_df = pd.DataFrame({'Time': filtered_data['Time'], selected_location: avg_value})
 # 그래프 그리기
-fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location}")
+fig = px.line(filtered_data, x="Time", y=yxs, title=f"{selected_location}")
 #fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
 # y 축 리미트 설정
 fig.update_layout(yaxis=dict(range=[avg_value - rng_vale, avg_value + rng_vale]))
