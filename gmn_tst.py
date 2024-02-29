@@ -45,7 +45,7 @@ else:
 filtered_data = filtered_data.sort_values(by='Time', ascending=False)
 
 # Main content (오른쪽 프레임)
-st.title("지하수위 관측 웹페이지")
+st.title("지하수위 계측기 설치 평면도")
 
 # 이미지 표시
 st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
