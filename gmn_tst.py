@@ -95,5 +95,5 @@ selected_data_preview = filtered_data[['Time', selected_location]].copy()
 selected_data_preview.set_index('Time', inplace=True)
 
 # 왼쪽 프레임에 데이터를 미리보는 창
-st.sidebar.subheader("선택된 자료 미리보기")
+st.sidebar.subheader("선택한 자료 미리보기")
 st.sidebar.write(selected_data_preview.sort_index().head(15))
