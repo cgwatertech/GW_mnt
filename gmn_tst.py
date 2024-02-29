@@ -32,6 +32,9 @@ end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S"
 # 선택하는 시간 선택
 selected_hour = st.sidebar.selectbox("선택하는 시간", range(25))
 
+# 슬라이더로 범위 크기 조절
+rng_cmn = st.sidebar.slider("범위 크기", min_value=1, max_value=20, value=5, step=1)
+
 # 시작 날짜와 끝 날짜 사이의 데이터 필터링 및 시간 필터링
 if selected_hour == 24:
     filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
@@ -49,8 +52,6 @@ st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.
 
 # Plot (오른쪽 아래 프레임)
 st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
-
-rng_cmn = 5
 
 # 선택한 위치에 대한 평균 값을 계산
 avg_value = filtered_data[selected_location].mean()
@@ -71,21 +72,6 @@ fig.update_layout(yaxis=dict(range=[avg_value - rng_vale, avg_value + rng_vale])
 tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 5 ticks로 나누기
 ticktext = [val.strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
-
-# 확대 및 축소 기능 추가
-fig.update_layout(
-    updatemenus=[
-        dict(
-            type="buttons",
-            x=1.05,
-            y=0.8,
-            buttons=[
-                dict(label="전체보기", method="relayout", args=["yaxis", dict(range=[filtered_data[selected_location].min(), filtered_data[selected_location].max()])]),
-                dict(label="기본값", method="relayout", args=["yaxis", dict(range=[avg_value - 17, avg_value + 17])]),
-            ],
-        ),
-    ]
-)
 
 # 반응형으로 그래프 표시
 st.plotly_chart(fig, use_container_width=True)
