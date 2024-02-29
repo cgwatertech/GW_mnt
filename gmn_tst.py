@@ -72,6 +72,21 @@ tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 5 ticks로 �
 ticktext = [val.strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
+# 확대 및 축소 기능 추가
+fig.update_layout(
+    updatemenus=[
+        dict(
+            type="buttons",
+            x=1.05,
+            y=0.8,
+            buttons=[
+                dict(label="전체보기", method="relayout", args=["yaxis", dict(range=[filtered_data[selected_location].min(), filtered_data[selected_location].max()])]),
+                dict(label="기본값", method="relayout", args=["yaxis", dict(range=[avg_value - 17, avg_value + 17])]),
+            ],
+        ),
+    ]
+)
+
 # 반응형으로 그래프 표시
 st.plotly_chart(fig, use_container_width=True)
 
