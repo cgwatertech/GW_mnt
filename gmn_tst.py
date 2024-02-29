@@ -51,7 +51,7 @@ st.title("지하수위 계측기 설치 평면도")
 st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
 
 # Plot (오른쪽 아래 프레임)
-st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
+st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_datetime} ~ {end_datetime})")
 
 # 선택한 위치에 대한 평균 값을 계산
 avg_value = filtered_data[selected_location].mean()
