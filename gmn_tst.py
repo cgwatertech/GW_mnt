@@ -4,7 +4,6 @@ import plotly.express as px
 import base64
 from datetime import datetime, timedelta
 
-ystv = 16
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
 
@@ -58,7 +57,7 @@ avg_value = filtered_data[selected_location].mean()
 mx_value = filtered_data[selected_location].max()
 mn_value = filtered_data[selected_location].min()
 rng_value = (mx_value - mn_value) * rng_cmn
-rng_vale = rng_value/2
+rng_vale = rng_value / 2
 
 # 평균 값으로 새로운 데이터 프레임을 만듦
 avg_df = pd.DataFrame({'Time': filtered_data['Time'], selected_location: avg_value})
@@ -73,24 +72,8 @@ tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 5 ticks로 �
 ticktext = [val.strftime('%Y-%m-%d %H:%M') for val in tickvals]
 fig.update_layout(xaxis=dict(tickvals=tickvals, ticktext=ticktext))
 
-# 확대 및 축소 기능 추가
-fig.update_layout(
-    updatemenus=[
-        dict(
-            type="buttons",
-            x=1.05,
-            y=0.8,
-            buttons=[
-                dict(label="전체보기", method="relayout", args=["yaxis", dict(range=[filtered_data[selected_location].min(), filtered_data[selected_location].max()])]),
-                dict(label="기본값", method="relayout", args=["yaxis", dict(range=[avg_value - 17, avg_value + 17])]),
-            ],
-        ),
-    ]
-)
-
 # 반응형으로 그래프 표시
 st.plotly_chart(fig, use_container_width=True)
-#st.plotly_chart(fig, use_container_width=False)
 
 # 선택한 그래프의 시간과 데이터 다운로드 버튼
 selected_data = filtered_data[['Time', selected_location]]
