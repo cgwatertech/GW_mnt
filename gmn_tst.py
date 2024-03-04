@@ -10,9 +10,6 @@ yxs = "GL"
 # Sidebar (왼쪽 프레임)
 st.sidebar.title("지하수위계")
 
-# 처음 5개 행 출력하여 시간 열의 데이터 형식 확인
-st.write(df.head())
-
 # 'Time'을 제외한 컬럼들을 선택 박스에 넣음
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
