@@ -14,6 +14,7 @@ st.sidebar.title("지하수위계")
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 st.write(df.head())
+print(df.info())
 
 # Time 열을 DateTime 객체로 변환
 #df['Time']=pd.to_datetime(df['Time'], format='%Y-%m-%d %H:%M',errors='raise')
