@@ -13,6 +13,8 @@ st.sidebar.title("지하수위계")
 # 'Time'을 제외한 컬럼들을 선택 박스에 넣음
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
+st.write(df.head())
+
 # Time 열을 DateTime 객체로 변환
 df['Time'] = pd.to_datetime(df['Time'], format='%Y.%m.%d %H:%M')
 
