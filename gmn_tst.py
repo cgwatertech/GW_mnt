@@ -14,7 +14,7 @@ st.sidebar.title("지하수위계")
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # Time 열을 DateTime 객체로 변환
-df['Time'] = pd.to_datetime(df['Time'], format='%Y.%m.%d %H:%M:%S')
+df['Time'] = pd.to_datetime(df['Time'], format='%Y.%m.%d %H:%M')
 
 # 시작 날짜와 끝 날짜 선택
 start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min().date(), max_value=df['Time'].max().date(), value=df['Time'].max().date() - timedelta(days=7))
