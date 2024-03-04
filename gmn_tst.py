@@ -15,10 +15,9 @@ selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # Time 열을 DateTime 객체로 변환
 
+st.write(df.head())
 print(df.info())
 df['Time']=pd.to_datetime(df['Time'])
-
-st.write(df.head())
 print(df.info())
 
 df['Time']=pd.to_datetime(df['Time'], format='%Y-%m-%d %H:%M',errors='raise')
