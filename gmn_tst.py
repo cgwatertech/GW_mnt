@@ -6,20 +6,15 @@ from datetime import datetime, timedelta
 
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
-yxs = "GL"
+
 # Sidebar (왼쪽 프레임)
 st.sidebar.title("지하수위계")
-
-st.write(df.head())
 
 # 'Time'을 제외한 컬럼들을 선택 박스에 넣음
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
-# 시간 열을 DateTime 객체로 변환
-#df['Time'] = pd.to_datetime(df['Time'], format='%Y-%m-%d %H:%M:%S')
-#df['Time'] = pd.to_datetime(df['Time'], format='%Y.%m.%d %H:%M:%S')
+# Time 열을 DateTime 객체로 변환
 df['Time'] = pd.to_datetime(df['Time'], format='%Y.%m.%d %H:%M')
-
 
 # 시작 날짜와 끝 날짜 선택
 start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max() - timedelta(days=7))
