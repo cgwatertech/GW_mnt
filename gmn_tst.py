@@ -5,7 +5,7 @@ import base64
 from datetime import datetime, timedelta
 
 # Sample data
-df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
+df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv",parse_dates=['Time'], infer_datetime_format=True)
 
 # Sidebar (왼쪽 프레임)
 st.sidebar.title("지하수위계")
