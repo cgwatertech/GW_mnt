@@ -5,35 +5,23 @@ import base64
 from datetime import datetime, timedelta
 
 # Sample data
-df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv",parse_dates=['Time'], infer_datetime_format=True)
+df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt.csv")
 
 # Sidebar (왼쪽 프레임)
-st.sidebar.title("지하수위계")
+st.sidebar.title("위치 리스트")
 
 # 'Time'을 제외한 컬럼들을 선택 박스에 넣음
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # Time 열을 DateTime 객체로 변환
-
-st.write(df.head())
-print(df.info())
-df['Time']=pd.to_datetime(df['Time'])
-print(df.info())
-
-df['Time']=pd.to_datetime(df['Time'], format='%Y-%m-%d %H:%M',errors='raise')
-#print(df['Time'])
-#df['Time'] = df['Time'].astype('str')
-#df['Time'].apply(lambda _ : datetime.strptime(_,'%Y%m%d %H:%M')
-#pd.to_datetime(df['Time'], format='%Y.%m.%d %H:%M')
-
-#df['date']= df['date'].astype('str')
+df['Time'] = pd.to_datetime(df['Time'])
 
 # 시작 날짜와 끝 날짜 선택
-start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min().date(), max_value=df['Time'].max().date(), value=df['Time'].max().date() - timedelta(days=7))
+start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max() - timedelta(days=7))
 # 시간 선택
 start_time = st.sidebar.selectbox("시작 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=0)
 
-end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min().date(), max_value=df['Time'].max().date(), value=df['Time'].max().date())
+end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
 # 시간 선택
 end_time = st.sidebar.selectbox("끝 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=len(pd.date_range("00:00:00", "23:00:00", freq="H")) - 1)
 
@@ -57,13 +45,13 @@ else:
 filtered_data = filtered_data.sort_values(by='Time', ascending=False)
 
 # Main content (오른쪽 프레임)
-st.title("지하수위 계측기 설치 평면도")
+st.title("지하수위 관측 웹페이지")
 
 # 이미지 표시
 st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
 
 # Plot (오른쪽 아래 프레임)
-st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_datetime} ~ {end_datetime})")
+st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
 
 # 선택한 위치에 대한 평균 값을 계산
 avg_value = filtered_data[selected_location].mean()
@@ -75,8 +63,8 @@ rng_vale = rng_value / 2
 # 평균 값으로 새로운 데이터 프레임을 만듦
 avg_df = pd.DataFrame({'Time': filtered_data['Time'], selected_location: avg_value})
 # 그래프 그리기
-fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 지하수 그래프")
-#fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
+fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
+
 # y 축 리미트 설정
 fig.update_layout(yaxis=dict(range=[avg_value - rng_vale, avg_value + rng_vale]))
 
@@ -106,5 +94,5 @@ selected_data_preview = filtered_data[['Time', selected_location]].copy()
 selected_data_preview.set_index('Time', inplace=True)
 
 # 왼쪽 프레임에 데이터를 미리보는 창
-st.sidebar.subheader("선택한 자료 미리보기")
+st.sidebar.subheader("선택된 자료 미리보기")
 st.sidebar.write(selected_data_preview.sort_index().head(15))
