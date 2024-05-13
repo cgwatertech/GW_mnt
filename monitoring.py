@@ -14,6 +14,8 @@ st.sidebar.title("위치 리스트")
 start_dates = {}
 end_dates = {}
 for col in df.columns[1:]:
+    if col == selected_location:
+        continue
     start_dates[col] = df.loc[df[col].first_valid_index(), 'Time']
     end_dates[col] = df.loc[df[col].last_valid_index(), 'Time']
 
