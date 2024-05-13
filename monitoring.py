@@ -10,18 +10,22 @@ df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt
 # Sidebar (왼쪽 프레임)
 st.sidebar.title("위치 리스트")
 
+# 각 위치의 최초 시작 날짜와 마지막 날짜 계산
+start_dates = {}
+end_dates = {}
+for col in df.columns[1:]:
+    start_dates[col] = df.loc[df[col].first_valid_index(), 'Time']
+    end_dates[col] = df.loc[df[col].last_valid_index(), 'Time']
+
 # 'Time'을 제외한 컬럼들을 선택 박스에 넣음
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
-# Time 열을 DateTime 객체로 변환
-df['Time'] = pd.to_datetime(df['Time'])
-
 # 시작 날짜와 끝 날짜 선택
-start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max() - timedelta(days=7))
+start_date = st.sidebar.date_input("시작 날짜 선택", min_value=start_dates[selected_location], max_value=end_dates[selected_location], value=start_dates[selected_location])
 # 시간 선택
 start_time = st.sidebar.selectbox("시작 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=0)
 
-end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
+end_date = st.sidebar.date_input("끝 날짜 선택", min_value=start_dates[selected_location], max_value=end_dates[selected_location], value=end_dates[selected_location])
 # 시간 선택
 end_time = st.sidebar.selectbox("끝 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=len(pd.date_range("00:00:00", "23:00:00", freq="H")) - 1)
 
@@ -29,20 +33,11 @@ end_time = st.sidebar.selectbox("끝 시간 선택", options=pd.date_range("00:0
 start_datetime = datetime.combine(start_date, datetime.strptime(start_time, "%H:%M:%S").time())
 end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S").time())
 
-# # 선택하는 시간 선택
-# selected_hour = st.sidebar.selectbox("선택하는 시간", range(25))
-
-# # 슬라이더로 범위 크기 조절
-# rng_cmn = st.sidebar.slider("범위 크기", min_value=1, max_value=20, value=5, step=1)
-
-# 시작 날짜와 끝 날짜 사이의 데이터 필터링 및 시간 필터링
-# if selected_hour == 24:
-#     filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
-# else:
-#     filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime) & (df['Time'].dt.hour == selected_hour)]
+# 시작 날짜와 끝 날짜 사이의 데이터 필터링
+filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
 
 # 최신 자료가 먼저 표시되도록 정렬
-filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)].sort_values(by='Time', ascending=False)
+filtered_data = filtered_data.sort_values(by='Time', ascending=False)
 
 # Main content (오른쪽 프레임)
 st.title("지하수위 관측 웹페이지")
