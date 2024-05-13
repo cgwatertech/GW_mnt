@@ -10,6 +10,9 @@ df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt
 # Sidebar (왼쪽 프레임)
 st.sidebar.title("위치 리스트")
 
+# 'Time'을 제외한 컬럼들을 선택 박스에 넣음
+selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
+
 # 각 위치의 최초 시작 날짜와 마지막 날짜 계산
 start_dates = {}
 end_dates = {}
@@ -18,9 +21,6 @@ for col in df.columns[1:]:
         continue
     start_dates[col] = df.loc[df[col].first_valid_index(), 'Time']
     end_dates[col] = df.loc[df[col].last_valid_index(), 'Time']
-
-# 'Time'을 제외한 컬럼들을 선택 박스에 넣음
-selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # 시작 날짜와 끝 날짜 선택
 start_date = st.sidebar.date_input("시작 날짜 선택", min_value=start_dates[selected_location], max_value=end_dates[selected_location], value=start_dates[selected_location])
