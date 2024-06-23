@@ -33,8 +33,10 @@ max_time = df['Time'].max()
 st.write("Min Time:", min_time)
 st.write("Max Time:", max_time)
 
+dlt_nm = 3 # 차이를 볼 날짜
+
 # 시작 날짜와 끝 날짜 선택
-default_start_date = max_time - timedelta(days=7)
+default_start_date = max_time - timedelta(days=dlt_nm)
 
 # debug output
 st.write("Default Start Date:", default_start_date)
