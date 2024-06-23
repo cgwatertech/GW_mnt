@@ -47,9 +47,6 @@ if min_time is not None and max_time is not None and default_start_date is not N
         start_datetime = datetime.combine(start_date, datetime.strptime(start_time, "%H:%M:%S").time())
         end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S").time())
 
-            start_str = start_datetime.strftime('%y년 %m월 %d일 %H시')
-            end_str = end_datetime.strftime('%y년 %m월 %d일 %H시')
-            st.subheader(f"{selected_location} 의 지하수위 ({start_str} 부터 {end_str})")
         # 선택하는 시간 선택 (기본값을 24로 설정)
         selected_hour = st.sidebar.selectbox("선택하는 시간", range(25), index=24)
 
