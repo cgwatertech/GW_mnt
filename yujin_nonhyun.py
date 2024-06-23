@@ -34,12 +34,6 @@ dlt_nm = 3 # 차이를 볼 날짜
 # 시작 날짜와 끝 날짜 선택
 default_start_date = max_time - timedelta(days=dlt_nm) if (max_time - timedelta(days=dlt_nm)) > min_time else min_time
 
-# 선택하는 시간 선택
-selected_hour = st.sidebar.selectbox("선택하는 시간", range(25))
-
-# 슬라이더로 범위 크기 조절
-rng_cmn = st.sidebar.slider("범위 크기", min_value=1, max_value=20, value=5, step=1)
-
 # 날짜 입력을 받을 수 있는지 확인
 if min_time is not None and max_time is not None and default_start_date is not None:
     try:
@@ -51,6 +45,12 @@ if min_time is not None and max_time is not None and default_start_date is not N
         # datetime 객체로 변환
         start_datetime = datetime.combine(start_date, datetime.strptime(start_time, "%H:%M:%S").time())
         end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S").time())
+
+        # 선택하는 시간 선택
+        selected_hour = st.sidebar.selectbox("선택하는 시간", range(25))
+
+        # 슬라이더로 범위 크기 조절
+        rng_cmn = st.sidebar.slider("범위 크기", min_value=1, max_value=20, value=5, step=1)
         
         # 선택한 시간 범위 내의 데이터 필터링
         filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
@@ -73,7 +73,22 @@ if min_time is not None and max_time is not None and default_start_date is not N
             
             # 그래프 그리기
             fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
-            
+
+            # 선택한 위치에 대한 평균 값을 계산
+            avg_value = filtered_data[selected_location].mean()
+            mx_value = filtered_data[selected_location].max()
+            mn_value = filtered_data[selected_location].min()
+            rng_value = (mx_value - mn_value) * rng_cmn
+            rng_vale = rng_value / 2
+
+            # 평균 값으로 새로운 데이터 프레임을 만듦
+            avg_df = pd.DataFrame({'Time': filtered_data['Time'], selected_location: avg_value})
+            # 그래프 그리기
+            fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
+
+            # y 축 리미트 설정
+            fig.update_layout(yaxis=dict(range=[avg_value - rng_vale, avg_value + rng_vale]))
+
             # x 축 tick 및 라벨 설정
             if len(filtered_data) >= 5:
                 tickvals = filtered_data['Time'].iloc[::len(filtered_data) // 5]  # 5 ticks로 나누기
