@@ -4,9 +4,8 @@ import plotly.express as px
 import base64
 from datetime import datetime, timedelta
 
-# Sample data
+# 데이터 불러오기
 url = "https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv"
-#df = pd.read_csv(url)
 
 try:
     df = pd.read_csv(url)
@@ -14,10 +13,7 @@ try:
 except Exception as e:
     print(f"CSV 파일을 읽는 중 에러가 발생했습니다: {e}")
 
-# 'Time'을 제외한 컬럼들을 선택 박스에 넣음
-selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
-
-# Time 열을 DateTime 객체로 변환
+# 'Time' 열을 DateTime 객체로 변환
 df['Time'] = pd.to_datetime(df['Time'], errors='coerce')
 
 # NaT 또는 Null 값 제거
@@ -26,14 +22,45 @@ df = df.dropna(subset=['Time'])
 # Sidebar (왼쪽 프레임)
 st.sidebar.title("위치 리스트")
 
+# 'Time'을 제외한 컬럼들을 선택 박스에 넣음
+selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
+
 # 시작 날짜와 끝 날짜 선택
 min_time = df['Time'].min()
 max_time = df['Time'].max()
 
+# debug output
+st.write("Min Time:", min_time)
+st.write("Max Time:", max_time)
+
 # 시작 날짜와 끝 날짜 선택
 default_start_date = max_time - timedelta(days=7)
-start_date = st.sidebar.date_input("시작 날짜 선택", min_value=min_time.date(), max_value=max_time.date(), value=default_start_date.date())
-start_time = st.sidebar.selectbox("시작 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=0)
+
+# debug output
+st.write("Default Start Date:", default_start_date)
+
+# 디버그용 변수 출력
+if min_time is not None:
+    st.write("Min Time is not None")
+else:
+    st.write("Min Time is None")
+
+if max_time is not None:
+    st.write("Max Time is not None")
+else:
+    st.write("Max Time is None")
+
+if default_start_date is not None:
+    st.write("Default Start Date is not None")
+else:
+    st.write("Default Start Date is None")
+
+# 날짜 입력을 받을 수 있는지 확인
+if min_time is not None and max_time is not None and default_start_date is not None:
+    start_date = st.sidebar.date_input("시작 날짜 선택", min_value=min_time.date(), max_value=max_time.date(), value=default_start_date.date())
+    start_time = st.sidebar.selectbox("시작 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=0)
+else:
+    st.write("날짜 선택을 위한 변수 중 하나가 None입니다. 데이터를 확인해주세요.")
 
 end_date = st.sidebar.date_input("끝 날짜 선택", min_value=min_time.date(), max_value=max_time.date(), value=max_time.date())
 end_time = st.sidebar.selectbox("끝 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=len(pd.date_range("00:00:00", "23:00:00", freq="H")) - 1)
