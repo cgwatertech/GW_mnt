@@ -34,6 +34,12 @@ dlt_nm = 3 # 차이를 볼 날짜
 # 시작 날짜와 끝 날짜 선택
 default_start_date = max_time - timedelta(days=dlt_nm) if (max_time - timedelta(days=dlt_nm)) > min_time else min_time
 
+# 선택하는 시간 선택
+selected_hour = st.sidebar.selectbox("선택하는 시간", range(25))
+
+# 슬라이더로 범위 크기 조절
+rng_cmn = st.sidebar.slider("범위 크기", min_value=1, max_value=20, value=5, step=1)
+
 # 날짜 입력을 받을 수 있는지 확인
 if min_time is not None and max_time is not None and default_start_date is not None:
     try:
