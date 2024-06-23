@@ -9,9 +9,9 @@ url = "https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv"
 
 try:
     df = pd.read_csv(url)
-    print("CSV 파일을 성공적으로 읽었습니다.")
 except Exception as e:
     print(f"CSV 파일을 읽는 중 에러가 발생했습니다: {e}")
+    return
 
 # 'Time' 열을 DateTime 객체로 변환
 df['Time'] = pd.to_datetime(df['Time'], errors='coerce')
@@ -29,10 +29,6 @@ selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 min_time = df['Time'].min()
 max_time = df['Time'].max()
 
-# debug output
-st.write("Min Time:", min_time)
-st.write("Max Time:", max_time)
-
 dlt_nm = 3 # 차이를 볼 날짜
 
 # 시작 날짜와 끝 날짜 선택
@@ -40,22 +36,6 @@ default_start_date = max_time - timedelta(days=dlt_nm)
 
 # debug output
 st.write("Default Start Date:", default_start_date)
-
-# 디버그용 변수 출력
-if min_time is not None:
-    st.write("Min Time is not None")
-else:
-    st.write("Min Time is None")
-
-if max_time is not None:
-    st.write("Max Time is not None")
-else:
-    st.write("Max Time is None")
-
-if default_start_date is not None:
-    st.write("Default Start Date is not None")
-else:
-    st.write("Default Start Date is None")
 
 # 날짜 입력을 받을 수 있는지 확인
 if min_time is not None and max_time is not None and default_start_date is not None:
