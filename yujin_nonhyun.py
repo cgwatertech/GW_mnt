@@ -14,14 +14,17 @@ try:
 except Exception as e:
     print(f"CSV 파일을 읽는 중 에러가 발생했습니다: {e}")
 
-# Sidebar (왼쪽 프레임)
-st.sidebar.title("위치 리스트")
-
 # 'Time'을 제외한 컬럼들을 선택 박스에 넣음
 selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 
 # Time 열을 DateTime 객체로 변환
-df['Time'] = pd.to_datetime(df['Time'])
+df['Time'] = pd.to_datetime(df['Time'], errors='coerce')
+
+# NaT 또는 Null 값 제거
+df = df.dropna(subset=['Time'])
+
+# Sidebar (왼쪽 프레임)
+st.sidebar.title("위치 리스트")
 
 # 시작 날짜와 끝 날짜 선택
 start_date = st.sidebar.date_input("시작 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max() - timedelta(days=7))
