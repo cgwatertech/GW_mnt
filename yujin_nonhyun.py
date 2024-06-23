@@ -47,10 +47,18 @@ if min_time is not None and max_time is not None and default_start_date is not N
         end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S").time())
 
         # 선택하는 시간 선택
-        selected_hour = st.sidebar.selectbox("선택하는 시간", range(25))
+        selected_hour = st.sidebar.selectbox("선택하는 시간", range(24))
 
         # 슬라이더로 범위 크기 조절
         rng_cmn = st.sidebar.slider("범위 크기", min_value=1, max_value=20, value=5, step=1)
+
+
+        # 시작 날짜와 끝 날짜 사이의 데이터 필터링 및 시간 필터링
+        if selected_hour == 24:
+            filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
+        else:
+            filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime) & (df['Time'].dt.hour == selected_hour)]
+
         
         # 선택한 시간 범위 내의 데이터 필터링
         filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
