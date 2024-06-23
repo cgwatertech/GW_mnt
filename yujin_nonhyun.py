@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import base64
 from datetime import datetime, timedelta
+import sys
 
 # 데이터 불러오기
 url = "https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv"
@@ -10,7 +11,7 @@ url = "https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv"
 try:
     df = pd.read_csv(url)
 except Exception as e:
-    print(f"CSV 파일을 읽는 중 에러가 발생했습니다: {e}")
+    st.error(f"CSV 파일을 읽는 중 에러가 발생했습니다: {e}")
     sys.exit()
 
 # 'Time' 열을 DateTime 객체로 변환
@@ -29,7 +30,7 @@ selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 min_time = df['Time'].min()
 max_time = df['Time'].max()
 
-dlt_nm = 3 # 차이를 볼 날짜
+dlt_nm = 3  # 차이를 볼 날짜
 
 # 시작 날짜와 끝 날짜 선택
 default_start_date = max_time - timedelta(days=dlt_nm) if (max_time - timedelta(days=dlt_nm)) > min_time else min_time
@@ -52,16 +53,11 @@ if min_time is not None and max_time is not None and default_start_date is not N
         # 슬라이더로 범위 크기 조절
         rng_cmn = st.sidebar.slider("범위 크기", min_value=1, max_value=20, value=5, step=1)
 
-
         # 시작 날짜와 끝 날짜 사이의 데이터 필터링 및 시간 필터링
         if selected_hour == 24:
             filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
         else:
             filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime) & (df['Time'].dt.hour == selected_hour)]
-
-        
-        # 선택한 시간 범위 내의 데이터 필터링
-        filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime)]
         
         # 최신 자료가 먼저 표시되도록 정렬
         filtered_data = filtered_data.sort_values(by='Time', ascending=False)
@@ -80,7 +76,7 @@ if min_time is not None and max_time is not None and default_start_date is not N
             st.subheader(f"{selected_location} 의 지하수위 ({start_datetime}부터 {end_datetime})")
             
             # 그래프 그리기
-            fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
+            fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
 
             # 선택한 위치에 대한 평균 값을 계산
             avg_value = filtered_data[selected_location].mean()
@@ -91,8 +87,6 @@ if min_time is not None and max_time is not None and default_start_date is not N
 
             # 평균 값으로 새로운 데이터 프레임을 만듦
             avg_df = pd.DataFrame({'Time': filtered_data['Time'], selected_location: avg_value})
-            # 그래프 그리기
-            fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
 
             # y 축 리미트 설정
             fig.update_layout(yaxis=dict(range=[avg_value - rng_vale, avg_value + rng_vale]))
