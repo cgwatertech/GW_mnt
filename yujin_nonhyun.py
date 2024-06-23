@@ -65,7 +65,7 @@ if min_time is not None and max_time is not None and default_start_date is not N
 
     # 데이터가 비어 있는지 확인
     if filtered_data.empty:
-        st.warning('기간을 확인해 주세요. 자료가 없어요.")
+        st.warning("기간을 확인해 주세요. 자료가 없어요.")
     else:
         # Main content (오른쪽 프레임)
         st.title("지하수위 관측 웹페이지")
