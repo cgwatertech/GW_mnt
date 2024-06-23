@@ -30,7 +30,8 @@ st.sidebar.title("위치 리스트")
 min_time = df['Time'].min()
 max_time = df['Time'].max()
 
-start_date = st.sidebar.date_input("시작 날짜 선택", min_value=min_time.date(), max_value=max_time.date(), value=df['Time'].max() - timedelta(days=7))
+start_date = st.sidebar.date_input("시작 날짜 선택", min_value=min_time.date(), max_value=max_time.date(), value=default_start_date.date())
+#start_date = st.sidebar.date_input("시작 날짜 선택", min_value=min_time.date(), max_value=max_time.date(), value=df['Time'].max() - timedelta(days=7))
 # 시간 선택
 start_time = st.sidebar.selectbox("시작 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=0)
 
