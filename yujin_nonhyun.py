@@ -5,7 +5,7 @@ import base64
 from datetime import datetime, timedelta
 
 # Sample data
-#df = pd.read_csv("https://raw.githubusercontent.com/GW_mnt/main/cgwt_nnhn.csv")
+#df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv")
 df = pd.read_csv("https://github.com/cgwatertech/GW_mnt/blob/main/cgwt_nnhn.csv")
 
 try:
