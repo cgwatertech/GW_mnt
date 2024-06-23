@@ -78,7 +78,7 @@ if min_time is not None and max_time is not None and default_start_date is not N
             st.subheader(f"{selected_location} 의 지하수위 ({start_str} 부터 {end_str})")
              
             # 그래프 그리기
-            fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 의 지하수위 변화 ({start_str}부터 {end_str})")
+            fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 의 지하수위 그래프 ({start_str}부터 {end_str})")
 
             # 선택한 위치에 대한 평균 값을 계산
             avg_value = filtered_data[selected_location].mean()
