@@ -30,7 +30,7 @@ selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 min_time = df['Time'].min()
 max_time = df['Time'].max()
 
-dlt_nm = 3  # 차이를 볼 날짜
+dlt_nm = 7  # 차이를 볼 날짜
 
 # 시작 날짜와 끝 날짜 선택
 default_start_date = max_time - timedelta(days=dlt_nm) if (max_time - timedelta(days=dlt_nm)) > min_time else min_time
