@@ -5,7 +5,8 @@ import base64
 from datetime import datetime, timedelta
 
 # Sample data
-df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv")
+url = "https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv"
+#df = pd.read_csv(url)
 
 try:
     df = pd.read_csv(url)
