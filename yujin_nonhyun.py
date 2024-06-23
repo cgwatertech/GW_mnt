@@ -102,17 +102,20 @@ if min_time is not None and max_time is not None and default_start_date is not N
             
             # 선택한 그래프의 시간과 데이터 다운로드 버튼
             selected_data = filtered_data[['Time', selected_location]]
+            selected_data['Time'] = selected_data['Time'].dt.strftime('%Y-%m-%d %H:%M:%S')  # 시간 형식 변경
             csv_selected_data = selected_data.to_csv(index=False)
             b64_selected_data = base64.b64encode(csv_selected_data.encode()).decode()
             st.markdown(f'<a href="data:file/csv;base64,{b64_selected_data}" download="selected_data.csv">선택 그래프 데이터 다운로드</a>', unsafe_allow_html=True)
             
             # 전체 데이터 다운로드 버튼
+            df['Time'] = df['Time'].dt.strftime('%Y-%m-%d %H:%M:%S')  # 시간 형식 변경
             csv_all_data = df.to_csv(index=False)
             b64_all_data = base64.b64encode(csv_all_data.encode()).decode()
             st.markdown(f'<a href="data:file/csv;base64,{b64_all_data}" download="all_data.csv">전체 자료 다운로드</a>', unsafe_allow_html=True)
             
             # 선택 결과를 새로운 창에서 보여주기
             selected_data_preview = filtered_data[['Time', selected_location]].copy()
+            selected_data_preview['Time'] = selected_data_preview['Time'].dt.strftime('%Y-%m-%d %H:%M:%S')  # 시간 형식 변경
             
             # 인덱스를 감춤
             selected_data_preview.set_index('Time', inplace=True)
