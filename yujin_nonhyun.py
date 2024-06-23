@@ -30,7 +30,7 @@ selected_location = st.sidebar.selectbox("위치 선택", df.columns[1:])
 min_time = df['Time'].min()
 max_time = df['Time'].max()
 
-dlt_nm = 6  # 차이를 볼 날짜
+dlt_nm = 3  # 차이를 볼 날짜
 
 # 시작 날짜와 끝 날짜 선택
 default_start_date = max_time - timedelta(days=dlt_nm) if (max_time - timedelta(days=dlt_nm)) > min_time else min_time
@@ -47,11 +47,11 @@ if min_time is not None and max_time is not None and default_start_date is not N
         start_datetime = datetime.combine(start_date, datetime.strptime(start_time, "%H:%M:%S").time())
         end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S").time())
 
-        # 선택하는 시간 선택
+        # 선택하는 시간 선택 (기본값을 24로 설정)
         selected_hour = st.sidebar.selectbox("선택하는 시간", range(25), index=24)
 
         # 슬라이더로 범위 크기 조절
-        rng_cmn = st.sidebar.slider("Y축 범위 조절", min_value=1, max_value=20, value=7, step=1)
+        rng_cmn = st.sidebar.slider("범위 크기", min_value=1, max_value=20, value=5, step=1)
 
         # 시작 날짜와 끝 날짜 사이의 데이터 필터링 및 시간 필터링
         if selected_hour == 24:
@@ -59,8 +59,8 @@ if min_time is not None and max_time is not None and default_start_date is not N
         else:
             filtered_data = df[(df['Time'] >= start_datetime) & (df['Time'] <= end_datetime) & (df['Time'].dt.hour == selected_hour)]
         
-        # 최신 자료가 먼저 표시되도록 정렬
-        filtered_data = filtered_data.sort_values(by='Time', ascending=False)
+        # 최신 자료가 먼저 표시되도록 정렬 (오름차순으로 정렬)
+        filtered_data = filtered_data.sort_values(by='Time', ascending=True)
         
         # 데이터가 비어있는지 확인
         if filtered_data.empty:
@@ -102,20 +102,20 @@ if min_time is not None and max_time is not None and default_start_date is not N
             
             # 선택한 그래프의 시간과 데이터 다운로드 버튼
             selected_data = filtered_data[['Time', selected_location]]
-            selected_data['Time'] = selected_data['Time'].dt.strftime('%Y-%m-%d %H:%M:%S')  # 시간 형식 변경
+            selected_data['Time'] = selected_data['Time'].dt.strftime('%Y-%m-%d %H:%M')  # 시간 형식 변경
             csv_selected_data = selected_data.to_csv(index=False)
             b64_selected_data = base64.b64encode(csv_selected_data.encode()).decode()
             st.markdown(f'<a href="data:file/csv;base64,{b64_selected_data}" download="selected_data.csv">선택 그래프 데이터 다운로드</a>', unsafe_allow_html=True)
             
             # 전체 데이터 다운로드 버튼
-            df['Time'] = df['Time'].dt.strftime('%Y-%m-%d %H:%M:%S')  # 시간 형식 변경
+            df['Time'] = df['Time'].dt.strftime('%Y-%m-%d %H:%M')  # 시간 형식 변경
             csv_all_data = df.to_csv(index=False)
             b64_all_data = base64.b64encode(csv_all_data.encode()).decode()
             st.markdown(f'<a href="data:file/csv;base64,{b64_all_data}" download="all_data.csv">전체 자료 다운로드</a>', unsafe_allow_html=True)
             
             # 선택 결과를 새로운 창에서 보여주기
             selected_data_preview = filtered_data[['Time', selected_location]].copy()
-            selected_data_preview['Time'] = selected_data_preview['Time'].dt.strftime('%Y-%m-%d %H:%M:%S')  # 시간 형식 변경
+            selected_data_preview['Time'] = selected_data_preview['Time'].dt.strftime('%Y-%m-%d %H:%M')  # 시간 형식 변경
             
             # 인덱스를 감춤
             selected_data_preview.set_index('Time', inplace=True)
