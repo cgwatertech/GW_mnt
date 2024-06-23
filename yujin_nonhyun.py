@@ -11,7 +11,7 @@ try:
     df = pd.read_csv(url)
 except Exception as e:
     print(f"CSV 파일을 읽는 중 에러가 발생했습니다: {e}")
-    break
+    sys.exit()
 
 # 'Time' 열을 DateTime 객체로 변환
 df['Time'] = pd.to_datetime(df['Time'], errors='coerce')
