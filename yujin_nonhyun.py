@@ -48,7 +48,7 @@ if min_time is not None and max_time is not None and default_start_date is not N
         end_datetime = datetime.combine(end_date, datetime.strptime(end_time, "%H:%M:%S").time())
 
         # 선택하는 시간 선택
-        selected_hour = st.sidebar.selectbox("선택하는 시간", range(25))
+        selected_hour = st.sidebar.selectbox("선택하는 시간", range(25), index=24)
 
         # 슬라이더로 범위 크기 조절
         rng_cmn = st.sidebar.slider("Y축 범위 조절", min_value=1, max_value=20, value=5, step=1)
