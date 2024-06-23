@@ -5,9 +5,7 @@ import base64
 from datetime import datetime, timedelta
 
 # Sample data
-#df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv")
-df = pd.read_csv("https://github.com/cgwatertech/GW_mnt/blob/main/cgwt_nnhn.csv")
-
+df = pd.read_csv("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/cgwt_nnhn.csv")
 try:
     df = pd.read_csv(url)
     print("CSV 파일을 성공적으로 읽었습니다.")
