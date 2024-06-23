@@ -33,12 +33,9 @@ max_time = df['Time'].max()
 # 시작 날짜와 끝 날짜 선택
 default_start_date = max_time - timedelta(days=7)
 start_date = st.sidebar.date_input("시작 날짜 선택", min_value=min_time.date(), max_value=max_time.date(), value=default_start_date.date())
-
-# 시간 선택
 start_time = st.sidebar.selectbox("시작 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=0)
 
-end_date = st.sidebar.date_input("끝 날짜 선택", min_value=df['Time'].min(), max_value=df['Time'].max(), value=df['Time'].max())
-# 시간 선택
+end_date = st.sidebar.date_input("끝 날짜 선택", min_value=min_time.date(), max_value=max_time.date(), value=max_time.date())
 end_time = st.sidebar.selectbox("끝 시간 선택", options=pd.date_range("00:00:00", "23:00:00", freq="H").strftime("%H:%M:%S"), index=len(pd.date_range("00:00:00", "23:00:00", freq="H")) - 1)
 
 # datetime 객체로 변환
