@@ -7,6 +7,12 @@ from datetime import datetime, timedelta
 # Sample data
 df = pd.read_csv("https://raw.githubusercontent.com/GW_mnt/main/cgwt_nnhn.csv")
 
+try:
+    df = pd.read_csv(url)
+    print("CSV 파일을 성공적으로 읽었습니다.")
+except Exception as e:
+    print(f"CSV 파일을 읽는 중 에러가 발생했습니다: {e}")
+
 # Sidebar (왼쪽 프레임)
 st.sidebar.title("위치 리스트")
 
