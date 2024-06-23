@@ -60,7 +60,7 @@ if min_time is not None and max_time is not None and default_start_date is not N
             st.title("지하수위 관측 웹페이지")
             
             # 이미지 표시
-            st.image("https://raw.githubusercontent.com/cgwatertech/GW_mnt/main/desKTOP_IMG.png", use_column_width=True)
+            st.image("https://raw.githubusercontent.com/cgwatertech/gwmonitoring/main/Yujin_nonhyun.png", use_column_width=True)
             
             # Plot (오른쪽 아래 프레임)
             st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
