@@ -77,7 +77,7 @@ if min_time is not None and max_time is not None and default_start_date is not N
             st.image("https://raw.githubusercontent.com/cgwatertech/gwmonitoring/main/Yujin_nonhyun.png", use_column_width=True)
             
             # Plot (오른쪽 아래 프레임)
-            st.subheader(f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
+            st.subheader(f"{selected_location} 의 지하수위 ({start_datetime}부터 {end_datetime})")
             
             # 그래프 그리기
             fig = px.line(filtered_data, x="Time", y=selected_location, title=f"{selected_location} 위치의 지하수위 변화 ({start_datetime}부터 {end_datetime})")
