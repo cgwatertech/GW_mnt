@@ -70,7 +70,7 @@ if min_time is not None and max_time is not None and default_start_date is not N
             st.title("지하수위 관측 웹페이지")
             
             # 이미지 표시
-            st.image("https://raw.githubusercontent.com/cgwatertech/gwmonitoring/main/Yujin_nonhyun.png", use_column_width=True)
+            st.image("https://raw.githubusercontent.com/cgwatertech/gwmonitoring/main/Yujin_bd.png", use_column_width=True)
             
             # Plot (오른쪽 아래 프레임)
             start_str = start_datetime.strftime('%y년 %m월 %d일 %H시')
